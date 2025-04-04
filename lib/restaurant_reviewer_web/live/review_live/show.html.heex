@@ -1,0 +1,27 @@
+<.header>
+  Review {@review.id}
+  <:subtitle>This is a review record from your database.</:subtitle>
+  <:actions>
+    <.link patch={~p"/reviews/#{@review}/show/edit"} phx-click={JS.push_focus()}>
+      <.button>Edit review</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.list>
+  <:item title="Reviewer name">{@review.reviewer_name}</:item>
+  <:item title="Content">{@review.content}</:item>
+</.list>
+
+<.back navigate={~p"/reviews"}>Back to reviews</.back>
+
+<.modal :if={@live_action == :edit} id="review-modal" show on_cancel={JS.patch(~p"/reviews/#{@review}")}>
+  <.live_component
+    module={RestaurantReviewerWeb.ReviewLive.FormComponent}
+    id={@review.id}
+    title={@page_title}
+    action={@live_action}
+    review={@review}
+    patch={~p"/reviews/#{@review}"}
+  />
+</.modal>

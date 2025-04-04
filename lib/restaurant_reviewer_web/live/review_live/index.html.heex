@@ -1,0 +1,42 @@
+<.header>
+  Listing Reviews
+  <:actions>
+    <.link patch={~p"/reviews/new"}>
+      <.button>New Review</.button>
+    </.link>
+  </:actions>
+</.header>
+
+<.table
+  id="reviews"
+  rows={@streams.reviews}
+  row_click={fn {_id, review} -> JS.navigate(~p"/reviews/#{review}") end}
+>
+  <:col :let={{_id, review}} label="Reviewer name">{review.reviewer_name}</:col>
+  <:col :let={{_id, review}} label="Content">{review.content}</:col>
+  <:action :let={{_id, review}}>
+    <div class="sr-only">
+      <.link navigate={~p"/reviews/#{review}"}>Show</.link>
+    </div>
+    <.link patch={~p"/reviews/#{review}/edit"}>Edit</.link>
+  </:action>
+  <:action :let={{id, review}}>
+    <.link
+      phx-click={JS.push("delete", value: %{id: review.id}) |> hide("##{id}")}
+      data-confirm="Are you sure?"
+    >
+      Delete
+    </.link>
+  </:action>
+</.table>
+
+<.modal :if={@live_action in [:new, :edit]} id="review-modal" show on_cancel={JS.patch(~p"/reviews")}>
+  <.live_component
+    module={RestaurantReviewerWeb.ReviewLive.FormComponent}
+    id={@review.id || :new}
+    title={@page_title}
+    action={@live_action}
+    review={@review}
+    patch={~p"/reviews"}
+  />
+</.modal>
