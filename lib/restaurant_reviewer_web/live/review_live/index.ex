@@ -5,9 +5,23 @@ defmodule RestaurantReviewerWeb.ReviewLive.Index do
   alias RestaurantReviewer.Restaurants.Restaurant
   alias RestaurantReviewer.Reviews
   alias RestaurantReviewer.Reviews.Review
+  alias RestaurantReviewer.Countries.Country
+  alias RestaurantReviewer.CountryRepo
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
+    if session["country_id"] do
+      country = CountryRepo.get_by(Country, id: session["country_id"])
+
+      new_repo = case country.name do
+        "United States of America" -> RestaurantReviewer.Repo.USA
+        "Mexico" -> RestaurantReviewer.Repo.Mexico
+        "Canada" -> RestaurantReviewer.Repo.Canada
+      end
+
+      Repo.put_dynamic_repo(new_repo)
+    end
+
     restaurants = Repo.all(Restaurant) |> Enum.map(&{&1.name, &1.id})
     socket = assign(socket, restaurants: restaurants)
     {:ok, stream(socket, :reviews, Reviews.list_reviews() |> Repo.preload([:restaurant]))}

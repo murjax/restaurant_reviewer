@@ -1,4 +1,4 @@
-defmodule RestaurantReviewer.Repo.Migrations.CreateCountries do
+defmodule RestaurantReviewer.CountryRepo.Migrations.CreateCountries do
   use Ecto.Migration
 
   def change do

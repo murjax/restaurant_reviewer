@@ -19,6 +19,8 @@ defmodule RestaurantReviewerWeb.Router do
 
     get "/", PageController, :home
 
+    get "/set_cookie/:id", CountryController, :set_cookie
+
     live "/countries", CountryLive.Index, :index
     live "/countries/new", CountryLive.Index, :new
     live "/countries/:id/edit", CountryLive.Index, :edit

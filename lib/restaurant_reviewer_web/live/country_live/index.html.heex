@@ -17,6 +17,9 @@
     <div class="sr-only">
       <.link navigate={~p"/countries/#{country}"}>Show</.link>
     </div>
+    <button class="mr-2" phx-click={JS.push("connect", value: %{id: country.id})}>
+      Connect
+    </button>
     <.link patch={~p"/countries/#{country}/edit"}>Edit</.link>
   </:action>
   <:action :let={{id, country}}>

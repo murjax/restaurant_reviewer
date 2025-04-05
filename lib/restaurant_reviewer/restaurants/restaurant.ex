@@ -4,7 +4,6 @@ defmodule RestaurantReviewer.Restaurants.Restaurant do
 
   schema "restaurants" do
     field :name, :string
-    belongs_to :country, RestaurantReviewer.Countries.Country
 
     timestamps(type: :utc_datetime)
   end
@@ -12,7 +11,7 @@ defmodule RestaurantReviewer.Restaurants.Restaurant do
   @doc false
   def changeset(restaurant, attrs) do
     restaurant
-    |> cast(attrs, [:name, :country_id])
+    |> cast(attrs, [:name])
     |> validate_required([:name])
   end
 end

@@ -10,6 +10,10 @@ defmodule RestaurantReviewer.Application do
     children = [
       RestaurantReviewerWeb.Telemetry,
       RestaurantReviewer.Repo,
+      RestaurantReviewer.Repo.USA,
+      RestaurantReviewer.Repo.Canada,
+      RestaurantReviewer.Repo.Mexico,
+      RestaurantReviewer.CountryRepo,
       {DNSCluster, query: Application.get_env(:restaurant_reviewer, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: RestaurantReviewer.PubSub},
       # Start the Finch HTTP client for sending emails

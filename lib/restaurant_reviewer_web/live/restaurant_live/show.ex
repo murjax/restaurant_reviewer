@@ -2,13 +2,24 @@ defmodule RestaurantReviewerWeb.RestaurantLive.Show do
   use RestaurantReviewerWeb, :live_view
 
   alias RestaurantReviewer.Restaurants
-  alias RestaurantReviewer.Countries.Country
   alias RestaurantReviewer.Repo
+  alias RestaurantReviewer.Countries.Country
+  alias RestaurantReviewer.CountryRepo
 
   @impl true
-  def mount(_params, _session, socket) do
-    countries = Repo.all(Country) |> Enum.map(&{&1.name, &1.id})
-    socket = assign(socket, countries: countries)
+  def mount(_params, session, socket) do
+    if session["country_id"] do
+      country = CountryRepo.get_by(Country, id: session["country_id"])
+
+      new_repo = case country.name do
+        "United States of America" -> RestaurantReviewer.Repo.USA
+        "Mexico" -> RestaurantReviewer.Repo.Mexico
+        "Canada" -> RestaurantReviewer.Repo.Canada
+      end
+
+      Repo.put_dynamic_repo(new_repo)
+    end
+
     {:ok, socket}
   end
 
@@ -17,7 +28,7 @@ defmodule RestaurantReviewerWeb.RestaurantLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:restaurant, Restaurants.get_restaurant!(id) |> Repo.preload([:country]))}
+     |> assign(:restaurant, Restaurants.get_restaurant!(id))}
   end
 
   defp page_title(:show), do: "Show Restaurant"

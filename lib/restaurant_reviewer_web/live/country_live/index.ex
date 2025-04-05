@@ -3,9 +3,11 @@ defmodule RestaurantReviewerWeb.CountryLive.Index do
 
   alias RestaurantReviewer.Countries
   alias RestaurantReviewer.Countries.Country
+  alias RestaurantReviewer.CountryRepo
+  alias RestaurantReviewer.Repo
 
   @impl true
-  def mount(_params, _session, socket) do
+  def mount(_params, session, socket) do
     {:ok, stream(socket, :countries, Countries.list_countries())}
   end
 
@@ -43,5 +45,10 @@ defmodule RestaurantReviewerWeb.CountryLive.Index do
     {:ok, _} = Countries.delete_country(country)
 
     {:noreply, stream_delete(socket, :countries, country)}
+  end
+
+  @impl true
+  def handle_event("connect", %{"id" => id}, socket) do
+    {:noreply, push_navigate(socket, to: "/set_cookie/#{id}")}
   end
 end

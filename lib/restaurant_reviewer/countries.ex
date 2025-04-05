@@ -4,7 +4,7 @@ defmodule RestaurantReviewer.Countries do
   """
 
   import Ecto.Query, warn: false
-  alias RestaurantReviewer.Repo
+  alias RestaurantReviewer.CountryRepo
 
   alias RestaurantReviewer.Countries.Country
 
@@ -18,7 +18,7 @@ defmodule RestaurantReviewer.Countries do
 
   """
   def list_countries do
-    Repo.all(Country)
+    CountryRepo.all(Country)
   end
 
   @doc """
@@ -35,7 +35,7 @@ defmodule RestaurantReviewer.Countries do
       ** (Ecto.NoResultsError)
 
   """
-  def get_country!(id), do: Repo.get!(Country, id)
+  def get_country!(id), do: CountryRepo.get!(Country, id)
 
   @doc """
   Creates a country.
@@ -52,7 +52,7 @@ defmodule RestaurantReviewer.Countries do
   def create_country(attrs \\ %{}) do
     %Country{}
     |> Country.changeset(attrs)
-    |> Repo.insert()
+    |> CountryRepo.insert()
   end
 
   @doc """
@@ -70,7 +70,7 @@ defmodule RestaurantReviewer.Countries do
   def update_country(%Country{} = country, attrs) do
     country
     |> Country.changeset(attrs)
-    |> Repo.update()
+    |> CountryRepo.update()
   end
 
   @doc """
@@ -86,7 +86,7 @@ defmodule RestaurantReviewer.Countries do
 
   """
   def delete_country(%Country{} = country) do
-    Repo.delete(country)
+    CountryRepo.delete(country)
   end
 
   @doc """

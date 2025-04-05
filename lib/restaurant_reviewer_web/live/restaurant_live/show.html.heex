@@ -10,7 +10,6 @@
 
 <.list>
   <:item title="Name">{@restaurant.name}</:item>
-  <:item title="Country">{@restaurant.country && @restaurant.country.name}</:item>
 </.list>
 
 <.back navigate={~p"/restaurants"}>Back to restaurants</.back>
@@ -22,7 +21,6 @@
     title={@page_title}
     action={@live_action}
     restaurant={@restaurant}
-    countries={@countries}
     patch={~p"/restaurants/#{@restaurant}"}
   />
 </.modal>

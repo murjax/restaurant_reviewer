@@ -8,7 +8,7 @@
 import Config
 
 config :restaurant_reviewer,
-  ecto_repos: [RestaurantReviewer.Repo],
+  ecto_repos: [RestaurantReviewer.Repo, RestaurantReviewer.CountryRepo],
   generators: [timestamp_type: :utc_datetime]
 
 # Configures the endpoint

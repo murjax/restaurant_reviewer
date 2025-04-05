@@ -21,7 +21,6 @@ defmodule RestaurantReviewerWeb.RestaurantLive.FormComponent do
         phx-submit="save"
       >
         <.input field={@form[:name]} type="text" label="Name" />
-        <.input field={@form[:country_id]} type="select" options={@countries} label="Country" />
         <:actions>
           <.button phx-disable-with="Saving...">Save Restaurant</.button>
         </:actions>
@@ -53,7 +52,6 @@ defmodule RestaurantReviewerWeb.RestaurantLive.FormComponent do
   defp save_restaurant(socket, :edit, restaurant_params) do
     case Restaurants.update_restaurant(socket.assigns.restaurant, restaurant_params) do
       {:ok, restaurant} ->
-        restaurant = Repo.preload(restaurant, [:country])
         notify_parent({:saved, restaurant})
 
         {:noreply,

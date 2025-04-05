@@ -70,6 +70,7 @@ defmodule RestaurantReviewerWeb.ReviewLive.FormComponent do
   defp save_review(socket, :new, review_params) do
     case Reviews.create_review(review_params) do
       {:ok, review} ->
+        review = Repo.preload(review, [:restaurant])
         notify_parent({:saved, review})
 
         {:noreply,
