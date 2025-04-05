@@ -13,6 +13,7 @@
   row_click={fn {_id, restaurant} -> JS.navigate(~p"/restaurants/#{restaurant}") end}
 >
   <:col :let={{_id, restaurant}} label="Name">{restaurant.name}</:col>
+  <:col :let={{_id, restaurant}} label="Country">{restaurant.country && restaurant.country.name}</:col>
   <:action :let={{_id, restaurant}}>
     <div class="sr-only">
       <.link navigate={~p"/restaurants/#{restaurant}"}>Show</.link>
@@ -36,6 +37,7 @@
     title={@page_title}
     action={@live_action}
     restaurant={@restaurant}
+    countries={@countries}
     patch={~p"/restaurants"}
   />
 </.modal>

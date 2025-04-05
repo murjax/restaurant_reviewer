@@ -17,7 +17,7 @@ defmodule RestaurantReviewerWeb.RestaurantLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:restaurant, Restaurants.get_restaurant!(id))}
+     |> assign(:restaurant, Restaurants.get_restaurant!(id) |> Repo.preload([:country]))}
   end
 
   defp page_title(:show), do: "Show Restaurant"

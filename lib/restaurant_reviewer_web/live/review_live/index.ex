@@ -1,12 +1,16 @@
 defmodule RestaurantReviewerWeb.ReviewLive.Index do
   use RestaurantReviewerWeb, :live_view
 
+  alias RestaurantReviewer.Repo
+  alias RestaurantReviewer.Restaurants.Restaurant
   alias RestaurantReviewer.Reviews
   alias RestaurantReviewer.Reviews.Review
 
   @impl true
   def mount(_params, _session, socket) do
-    {:ok, stream(socket, :reviews, Reviews.list_reviews())}
+    restaurants = Repo.all(Restaurant) |> Enum.map(&{&1.name, &1.id})
+    socket = assign(socket, restaurants: restaurants)
+    {:ok, stream(socket, :reviews, Reviews.list_reviews() |> Repo.preload([:restaurant]))}
   end
 
   @impl true

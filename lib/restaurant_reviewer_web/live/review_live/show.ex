@@ -1,10 +1,14 @@
 defmodule RestaurantReviewerWeb.ReviewLive.Show do
   use RestaurantReviewerWeb, :live_view
 
+  alias RestaurantReviewer.Repo
+  alias RestaurantReviewer.Restaurants.Restaurant
   alias RestaurantReviewer.Reviews
 
   @impl true
   def mount(_params, _session, socket) do
+    restaurants = Repo.all(Restaurant) |> Enum.map(&{&1.name, &1.id})
+    socket = assign(socket, restaurants: restaurants)
     {:ok, socket}
   end
 
@@ -13,7 +17,7 @@ defmodule RestaurantReviewerWeb.ReviewLive.Show do
     {:noreply,
      socket
      |> assign(:page_title, page_title(socket.assigns.live_action))
-     |> assign(:review, Reviews.get_review!(id))}
+     |> assign(:review, Reviews.get_review!(id) |> Repo.preload([:restaurant]))}
   end
 
   defp page_title(:show), do: "Show Review"

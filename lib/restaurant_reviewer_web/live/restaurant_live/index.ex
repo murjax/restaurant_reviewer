@@ -10,7 +10,7 @@ defmodule RestaurantReviewerWeb.RestaurantLive.Index do
   def mount(_params, _session, socket) do
     countries = Repo.all(Country) |> Enum.map(&{&1.name, &1.id})
     socket = assign(socket, countries: countries)
-    {:ok, stream(socket, :restaurants, Restaurants.list_restaurants())}
+    {:ok, stream(socket, :restaurants, Restaurants.list_restaurants() |> Repo.preload([:country]))}
   end
 
   @impl true

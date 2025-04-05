@@ -5,7 +5,7 @@ defmodule RestaurantReviewer.Reviews.Review do
   schema "reviews" do
     field :content, :string
     field :reviewer_name, :string
-    field :restaurant_id, :id
+    belongs_to :restaurant, RestaurantReviewer.Restaurants.Restaurant
 
     timestamps(type: :utc_datetime)
   end
@@ -13,7 +13,7 @@ defmodule RestaurantReviewer.Reviews.Review do
   @doc false
   def changeset(review, attrs) do
     review
-    |> cast(attrs, [:reviewer_name, :content])
+    |> cast(attrs, [:reviewer_name, :content, :restaurant_id])
     |> validate_required([:reviewer_name, :content])
   end
 end

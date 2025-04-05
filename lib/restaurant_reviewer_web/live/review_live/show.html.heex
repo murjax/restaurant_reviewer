@@ -9,6 +9,7 @@
 </.header>
 
 <.list>
+  <:item title="Restaurant">{@review.restaurant && @review.restaurant.name}</:item>
   <:item title="Reviewer name">{@review.reviewer_name}</:item>
   <:item title="Content">{@review.content}</:item>
 </.list>
@@ -22,6 +23,7 @@
     title={@page_title}
     action={@live_action}
     review={@review}
+    restaurants={@restaurants}
     patch={~p"/reviews/#{@review}"}
   />
 </.modal>

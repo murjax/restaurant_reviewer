@@ -12,6 +12,7 @@
   rows={@streams.reviews}
   row_click={fn {_id, review} -> JS.navigate(~p"/reviews/#{review}") end}
 >
+  <:col :let={{_id, review}} label="Restaurant">{review.restaurant && review.restaurant.name}</:col>
   <:col :let={{_id, review}} label="Reviewer name">{review.reviewer_name}</:col>
   <:col :let={{_id, review}} label="Content">{review.content}</:col>
   <:action :let={{_id, review}}>
@@ -37,6 +38,7 @@
     title={@page_title}
     action={@live_action}
     review={@review}
+    restaurants={@restaurants}
     patch={~p"/reviews"}
   />
 </.modal>

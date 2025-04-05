@@ -1,6 +1,7 @@
 defmodule RestaurantReviewerWeb.ReviewLive.FormComponent do
   use RestaurantReviewerWeb, :live_component
 
+  alias RestaurantReviewer.Repo
   alias RestaurantReviewer.Reviews
 
   @impl true
@@ -19,6 +20,7 @@ defmodule RestaurantReviewerWeb.ReviewLive.FormComponent do
         phx-change="validate"
         phx-submit="save"
       >
+        <.input field={@form[:restaurant_id]} type="select" options={@restaurants} label="Restaurant" />
         <.input field={@form[:reviewer_name]} type="text" label="Reviewer name" />
         <.input field={@form[:content]} type="text" label="Content" />
         <:actions>
@@ -52,6 +54,7 @@ defmodule RestaurantReviewerWeb.ReviewLive.FormComponent do
   defp save_review(socket, :edit, review_params) do
     case Reviews.update_review(socket.assigns.review, review_params) do
       {:ok, review} ->
+        review = Repo.preload(review, [:restaurant])
         notify_parent({:saved, review})
 
         {:noreply,
