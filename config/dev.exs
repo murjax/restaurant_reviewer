@@ -11,8 +11,8 @@ config :restaurant_reviewer, RestaurantReviewer.Repo,
   pool_size: 10
 
 config :restaurant_reviewer, RestaurantReviewer.CountryRepo,
-  username: "postgres",
-  password: "postgres",
+  username: "root",
+  password: "mysql_pass",
   hostname: "localhost",
   database: "restaurant_reviewer_countries_dev",
   migration_source: "country_migrations",
