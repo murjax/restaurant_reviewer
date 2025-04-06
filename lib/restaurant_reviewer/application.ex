@@ -9,10 +9,6 @@ defmodule RestaurantReviewer.Application do
   def start(_type, _args) do
     children = [
       RestaurantReviewerWeb.Telemetry,
-      RestaurantReviewer.Repo,
-      RestaurantReviewer.Repo.USA,
-      RestaurantReviewer.Repo.Canada,
-      RestaurantReviewer.Repo.Mexico,
       RestaurantReviewer.CountryRepo,
       {DNSCluster, query: Application.get_env(:restaurant_reviewer, :dns_cluster_query) || :ignore},
       {Phoenix.PubSub, name: RestaurantReviewer.PubSub},

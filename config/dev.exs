@@ -20,23 +20,6 @@ config :restaurant_reviewer, RestaurantReviewer.CountryRepo,
   show_sensitive_data_on_connection_error: true,
   pool_size: 10
 
-sub_repos = %{
-  RestaurantReviewer.Repo.USA => "reviewer_usa",
-  RestaurantReviewer.Repo.Mexico => "reviewer_mexico",
-  RestaurantReviewer.Repo.Canada => "reviewer_canada"
-}
-
-for {repo, database_name} <- sub_repos do
-  config :restaurant_reviewer, repo,
-    username: "postgres",
-    password: "postgres",
-    hostname: "localhost",
-    database: database_name,
-    stacktrace: true,
-    show_sensitive_data_on_connection_error: true,
-    pool_size: 10
-end
-
 # For development, we disable any cache and enable
 # debugging and code reloading.
 #

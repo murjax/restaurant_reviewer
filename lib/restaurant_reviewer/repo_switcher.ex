@@ -6,13 +6,18 @@ defmodule RestaurantReviewer.RepoSwitcher do
   def connect_to_repo(nil), do: nil
   def connect_to_repo(country_id) do
     country = CountryRepo.get_by(Country, id: country_id)
+    prefix = "reviews_#{country.name}"
+    query_args = ["SET search_path TO #{prefix}", []]
+    after_connect = {Postgrex, :query!, query_args}
+    config = Application.get_env(:restaurant_reviewer, Repo) |> Keyword.put(:after_connect, after_connect)
 
-    new_repo = case country.name do
-      "United States of America" -> RestaurantReviewer.Repo.USA
-      "Mexico" -> RestaurantReviewer.Repo.Mexico
-      "Canada" -> RestaurantReviewer.Repo.Canada
+    case Repo.start_link(config) do
+      {:ok, pid} ->
+        Repo.put_dynamic_repo(pid)
+      {:error, {:already_started, pid}} ->
+        Repo.stop(1000)
+        {:ok, pid} = Repo.start_link(config)
+        Repo.put_dynamic_repo(pid)
     end
-
-    Repo.put_dynamic_repo(new_repo)
   end
 end
